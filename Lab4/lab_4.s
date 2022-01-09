@@ -1,0 +1,45 @@
+.text
+.global _start
+_start:
+
+START1:
+
+LDR R0, HEX0
+LDR R6, HEX5
+LDR R1, CNT
+
+MOVW R5, 0x3f6d
+
+MET:
+
+STR R5, [R0]
+
+LSL R5, #16
+LDR R2, DEL
+LOOP: SUBS R2, #1
+BNE LOOP
+SUBS R1, #1
+BNE MET
+
+MOVT R4, 0x0
+MOVW R4, 0x0
+STR R4, [R0]
+MOVW R5, 0x3f6d
+STR R5, [R6]
+
+LDR R2, DEL
+LOOP1: SUBS R2, #1
+BNE LOOP1
+LDR R2, DEL
+LOOP2: SUBS R2, #1
+BNE LOOP2
+STR R4, [R6]
+
+B START1
+
+fin: B fin
+HEX0: .word 0xFF200020
+HEX5: .word 0xFF200030
+CNT: .word 2
+DEL: .word 0x30000000
+.end

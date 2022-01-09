@@ -1,0 +1,276 @@
+
+/net/eniac.dcti.sut.ru/srv/nfs4/homes/homes/students/ikpi05/ikpi05n15/Assembler/Lab7/Lab7.axf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+00000000 <__cs3_interrupt_vector>:
+.text
+.global _start
+B _start
+   0:	ea000006 	b	20 <_start>
+B SERVISE_UND
+   4:	ea000012 	b	54 <SERVISE_UND>
+B SERVISE_SVC
+   8:	ea000012 	b	58 <SERVISE_SVC>
+B SERVISE_ABT_INST
+   c:	ea000012 	b	5c <SERVISE_ABT_INST>
+B SERVISE_ABT_DATA
+  10:	ea000012 	b	60 <SERVISE_ABT_DATA>
+  14:	00000000 	.word	0x00000000
+.word 0
+B SERVISE_IRQ
+  18:	ea000011 	b	64 <SERVISE_IRQ>
+B SERVISE_FIQ
+  1c:	ea000019 	b	88 <SERVISE_FIQ>
+
+00000020 <_start>:
+_start:
+MOV R1, #0b11010010
+  20:	e3a010d2 	mov	r1, #210	; 0xd2
+MSR CPSR_c, R1
+  24:	e121f001 	msr	CPSR_c, r1
+LDR SP, =0xFFFFFFFF-3
+  28:	e3e0d003 	mvn	sp, #3
+MOV R1, #0b11010011
+  2c:	e3a010d3 	mov	r1, #211	; 0xd3
+MSR CPSR_c, R1
+  30:	e121f001 	msr	CPSR_c, r1
+LDR SP, =0x3FFFFFFF-3
+  34:	e3e0d10f 	mvn	sp, #-1073741821	; 0xc0000003
+BL CONFIG_GIC
+  38:	eb000013 	bl	8c <CONFIG_GIC>
+LDR R0, =0xFF200050
+  3c:	e59f013c 	ldr	r0, [pc, #316]	; 180 <DL+0x14>
+MOV R1, #0xF
+  40:	e3a0100f 	mov	r1, #15
+STR R1, [R0, #0x8]
+  44:	e5801008 	str	r1, [r0, #8]
+MOV R0, #0b01010011
+  48:	e3a00053 	mov	r0, #83	; 0x53
+MSR CPSR_c, R0
+  4c:	e121f000 	msr	CPSR_c, r0
+
+00000050 <IDLE>:
+
+IDLE:
+////////////////////////////////
+B IDLE
+  50:	eafffffe 	b	50 <IDLE>
+
+00000054 <SERVISE_UND>:
+SERVISE_UND:
+B SERVISE_UND
+  54:	eafffffe 	b	54 <SERVISE_UND>
+
+00000058 <SERVISE_SVC>:
+SERVISE_SVC:
+B SERVISE_SVC
+  58:	eafffffe 	b	58 <SERVISE_SVC>
+
+0000005c <SERVISE_ABT_INST>:
+SERVISE_ABT_INST:
+B SERVISE_ABT_INST
+  5c:	eafffffe 	b	5c <SERVISE_ABT_INST>
+
+00000060 <SERVISE_ABT_DATA>:
+SERVISE_ABT_DATA:
+B SERVISE_ABT_DATA
+  60:	eafffffe 	b	60 <SERVISE_ABT_DATA>
+
+00000064 <SERVISE_IRQ>:
+SERVISE_IRQ:
+PUSH {R0-R7, LR}
+  64:	e92d40ff 	push	{r0, r1, r2, r3, r4, r5, r6, r7, lr}
+LDR R4, =0xFFFEC100
+  68:	e59f4114 	ldr	r4, [pc, #276]	; 184 <DL+0x18>
+LDR R5, [R4, #0x0C]
+  6c:	e594500c 	ldr	r5, [r4, #12]
+
+00000070 <FPGA_IRQ1_HANDLER>:
+FPGA_IRQ1_HANDLER:
+CMP R5, #73
+  70:	e3550049 	cmp	r5, #73	; 0x49
+
+00000074 <UNEXPECTED>:
+
+UNEXPECTED:
+BNE UNEXPECTED
+  74:	1afffffe 	bne	74 <UNEXPECTED>
+BL KEY_ISR
+  78:	eb000021 	bl	104 <KEY_ISR>
+
+0000007c <EXIT_IRQ>:
+EXIT_IRQ:
+STR R5, [R4, #0x10]
+  7c:	e5845010 	str	r5, [r4, #16]
+POP {R0-R7, LR}
+  80:	e8bd40ff 	pop	{r0, r1, r2, r3, r4, r5, r6, r7, lr}
+SUBS PC, LR, #4
+  84:	e25ef004 	subs	pc, lr, #4
+
+00000088 <SERVISE_FIQ>:
+SERVISE_FIQ:
+B SERVISE_FIQ
+  88:	eafffffe 	b	88 <SERVISE_FIQ>
+
+0000008c <CONFIG_GIC>:
+
+CONFIG_GIC:
+PUSH {LR}
+  8c:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+MOV R0, #73
+  90:	e3a00049 	mov	r0, #73	; 0x49
+MOV R1, #1
+  94:	e3a01001 	mov	r1, #1
+BL CONFIG_INTERRUPT
+  98:	eb000007 	bl	bc <CONFIG_INTERRUPT>
+LDR R0, =0xFFFEC100
+  9c:	e59f00e0 	ldr	r0, [pc, #224]	; 184 <DL+0x18>
+LDR R1, =0xFFFF
+  a0:	e59f10e0 	ldr	r1, [pc, #224]	; 188 <DL+0x1c>
+STR R1, [R0, #0x04]
+  a4:	e5801004 	str	r1, [r0, #4]
+MOV R1, #1
+  a8:	e3a01001 	mov	r1, #1
+STR R1, [R0]
+  ac:	e5801000 	str	r1, [r0]
+LDR R0, =0xFFFED000
+  b0:	e59f00d4 	ldr	r0, [pc, #212]	; 18c <DL+0x20>
+STR R1, [R0]
+  b4:	e5801000 	str	r1, [r0]
+POP {PC}
+  b8:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+000000bc <CONFIG_INTERRUPT>:
+
+CONFIG_INTERRUPT:
+PUSH {R4-R5, LR}
+  bc:	e92d4030 	push	{r4, r5, lr}
+LSR R4, R0, #3
+  c0:	e1a041a0 	lsr	r4, r0, #3
+BIC R4, R4, #3
+  c4:	e3c44003 	bic	r4, r4, #3
+LDR R2, =0xFFFED100
+  c8:	e59f20c0 	ldr	r2, [pc, #192]	; 190 <DL+0x24>
+ADD R4, R2, R4
+  cc:	e0824004 	add	r4, r2, r4
+AND R2, R0, #0x1F
+  d0:	e200201f 	and	r2, r0, #31
+MOV R5, #1
+  d4:	e3a05001 	mov	r5, #1
+LSL R2, R5, R2
+  d8:	e1a02215 	lsl	r2, r5, r2
+LDR R3, [R4]
+  dc:	e5943000 	ldr	r3, [r4]
+ORR R3, R3, R2
+  e0:	e1833002 	orr	r3, r3, r2
+STR R3, [R4]
+  e4:	e5843000 	str	r3, [r4]
+BIC R4, R0, #3
+  e8:	e3c04003 	bic	r4, r0, #3
+
+///////СТРАНИЦА 4//////////
+LDR R2, =0xFFFED800
+  ec:	e59f20a0 	ldr	r2, [pc, #160]	; 194 <DL+0x28>
+ADD R4, R2, R4
+  f0:	e0824004 	add	r4, r2, r4
+AND R2, R0, #3
+  f4:	e2002003 	and	r2, r0, #3
+ADD R4, R2, R4
+  f8:	e0824004 	add	r4, r2, r4
+STRB R1, [R4]
+  fc:	e5c41000 	strb	r1, [r4]
+POP {R4-R5, PC}
+ 100:	e8bd8030 	pop	{r4, r5, pc}
+
+00000104 <KEY_ISR>:
+KEY_ISR:
+LDR R0, =0xFF200050
+ 104:	e59f0074 	ldr	r0, [pc, #116]	; 180 <DL+0x14>
+LDR R1, [R0, #0xC]
+ 108:	e590100c 	ldr	r1, [r0, #12]
+MOV R2, #0xF
+ 10c:	e3a0200f 	mov	r2, #15
+STR R2, [R0,#0xC]
+ 110:	e580200c 	str	r2, [r0, #12]
+LDR R0, =0xFF200020
+ 114:	e59f007c 	ldr	r0, [pc, #124]	; 198 <DL+0x2c>
+
+00000118 <CHECK_KEY0>:
+CHECK_KEY0:
+MOV R3, #0x1
+ 118:	e3a03001 	mov	r3, #1
+ANDS R3, R3, R1
+ 11c:	e0133001 	ands	r3, r3, r1
+BEQ CHECK_KEY1
+ 120:	0a000002 	beq	130 <CHECK_KEY1>
+MOV R2, #0b00111111
+ 124:	e3a0203f 	mov	r2, #63	; 0x3f
+STR R2, [R0]
+ 128:	e5802000 	str	r2, [r0]
+B END_KEY_ISR
+ 12c:	ea00000d 	b	168 <END_KEY_ISR>
+
+00000130 <CHECK_KEY1>:
+CHECK_KEY1:
+MOV R3, #0x2
+ 130:	e3a03002 	mov	r3, #2
+ANDS R3, R3, R1
+ 134:	e0133001 	ands	r3, r3, r1
+BEQ CHECK_KEY2
+ 138:	0a000002 	beq	148 <CHECK_KEY2>
+MOV R2, #0b00000110
+ 13c:	e3a02006 	mov	r2, #6
+STR R2, [R0]
+ 140:	e5802000 	str	r2, [r0]
+B END_KEY_ISR
+ 144:	ea000007 	b	168 <END_KEY_ISR>
+
+00000148 <CHECK_KEY2>:
+CHECK_KEY2:
+MOV R3, #0x4
+ 148:	e3a03004 	mov	r3, #4
+ANDS R3, R3, R1
+ 14c:	e0133001 	ands	r3, r3, r1
+BEQ IS_KEY3
+ 150:	0a000002 	beq	160 <IS_KEY3>
+MOV R2, #0b01011011
+ 154:	e3a0205b 	mov	r2, #91	; 0x5b
+STR R2, [R0]
+ 158:	e5802000 	str	r2, [r0]
+B END_KEY_ISR
+ 15c:	ea000001 	b	168 <END_KEY_ISR>
+
+00000160 <IS_KEY3>:
+IS_KEY3:
+MOV R2, #0b01001111
+ 160:	e3a0204f 	mov	r2, #79	; 0x4f
+
+////////////СТРАНИЦА 5/////////////
+STR R2, [R0]
+ 164:	e5802000 	str	r2, [r0]
+
+00000168 <END_KEY_ISR>:
+END_KEY_ISR:
+LDR R9, =0x40000000
+ 168:	e3a09101 	mov	r9, #1073741824	; 0x40000000
+
+0000016c <DL>:
+DL:SUBS R9, R9, #1
+ 16c:	e2599001 	subs	r9, r9, #1
+BNE DL
+ 170:	1afffffd 	bne	16c <DL>
+MOV R2, #0
+ 174:	e3a02000 	mov	r2, #0
+STR R2, [R0]
+ 178:	e5802000 	str	r2, [r0]
+BX LR
+ 17c:	e12fff1e 	bx	lr
+ 180:	ff200050 	.word	0xff200050
+ 184:	fffec100 	.word	0xfffec100
+ 188:	0000ffff 	.word	0x0000ffff
+ 18c:	fffed000 	.word	0xfffed000
+ 190:	fffed100 	.word	0xfffed100
+ 194:	fffed800 	.word	0xfffed800
+ 198:	ff200020 	.word	0xff200020

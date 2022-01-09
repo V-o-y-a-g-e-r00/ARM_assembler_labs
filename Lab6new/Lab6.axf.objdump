@@ -1,0 +1,97 @@
+
+/net/eniac.dcti.sut.ru/srv/nfs4/homes/homes/students/ikpi05/ikpi05n15/Assembler/Lab6new/Lab6.axf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+00000000 <__cs3_interrupt_vector>:
+.text
+.global _start
+_start:
+PUSH {LR}
+   0:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+MOV R0,#101
+   4:	e3a00065 	mov	r0, #101	; 0x65
+MOV R1,#1
+   8:	e3a01001 	mov	r1, #1
+BL CONFIG_INTERRUPT
+   c:	eb000008 	bl	34 <CONFIG_INTERRUPT>
+LDR R0, =0xFFFEC100
+  10:	e59f0084 	ldr	r0, [pc, #132]	; 9c <CONFIG_INTERRUPT+0x68>
+MOV R1,R6
+  14:	e1a01006 	mov	r1, r6
+STRB R1, [R0,#0x04]
+  18:	e5c01004 	strb	r1, [r0, #4]
+LDRSB R2, [R0,#0x04]
+  1c:	e1d020d4 	ldrsb	r2, [r0, #4]
+MOV R1,#1
+  20:	e3a01001 	mov	r1, #1
+STR R1,[R0]
+  24:	e5801000 	str	r1, [r0]
+LDR R0, =0xFFFED000
+  28:	e59f0070 	ldr	r0, [pc, #112]	; a0 <CONFIG_INTERRUPT+0x6c>
+STR R1, [R0]
+  2c:	e5801000 	str	r1, [r0]
+POP {PC}
+  30:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+00000034 <CONFIG_INTERRUPT>:
+
+CONFIG_INTERRUPT:
+PUSH {R4-R5,LR}
+  34:	e92d4030 	push	{r4, r5, lr}
+LSR R4,R0,#3
+  38:	e1a041a0 	lsr	r4, r0, #3
+BIC R4,R4,#3
+  3c:	e3c44003 	bic	r4, r4, #3
+LDR R2, =0xFFFED100
+  40:	e59f205c 	ldr	r2, [pc, #92]	; a4 <CONFIG_INTERRUPT+0x70>
+ADD R4, R2, R4
+  44:	e0824004 	add	r4, r2, r4
+AND R2,R0,#0x1F
+  48:	e200201f 	and	r2, r0, #31
+MOV R5, #1
+  4c:	e3a05001 	mov	r5, #1
+LSL R2,R5,R2
+  50:	e1a02215 	lsl	r2, r5, r2
+LDR R3,[R4]
+  54:	e5943000 	ldr	r3, [r4]
+ORR R3,R3,R2
+  58:	e1833002 	orr	r3, r3, r2
+STR R3,[R4]
+  5c:	e5843000 	str	r3, [r4]
+BIC R4,R0,#3
+  60:	e3c04003 	bic	r4, r0, #3
+LDR R2, =0xFFFED400
+  64:	e59f203c 	ldr	r2, [pc, #60]	; a8 <CONFIG_INTERRUPT+0x74>
+ADD R4,R2,R4
+  68:	e0824004 	add	r4, r2, r4
+AND R2,R0,#3
+  6c:	e2002003 	and	r2, r0, #3
+ADD R4,R2,R4
+  70:	e0824004 	add	r4, r2, r4
+MOV R5,#8
+  74:	e3a05008 	mov	r5, #8
+STRB R5,[R4]
+  78:	e5c45000 	strb	r5, [r4]
+LDRSB R6,[R4]
+  7c:	e1d460d0 	ldrsb	r6, [r4]
+BIC R4,R0,#3
+  80:	e3c04003 	bic	r4, r0, #3
+LDR R2, =0xFFFED800
+  84:	e59f2020 	ldr	r2, [pc, #32]	; ac <CONFIG_INTERRUPT+0x78>
+ADD R4,R2,R4
+  88:	e0824004 	add	r4, r2, r4
+AND R2,R0,#3
+  8c:	e2002003 	and	r2, r0, #3
+ADD R4,R2,R4
+  90:	e0824004 	add	r4, r2, r4
+STRB R1,[R4]
+  94:	e5c41000 	strb	r1, [r4]
+POP {R4-R5,PC}
+  98:	e8bd8030 	pop	{r4, r5, pc}
+  9c:	fffec100 	.word	0xfffec100
+  a0:	fffed000 	.word	0xfffed000
+  a4:	fffed100 	.word	0xfffed100
+  a8:	fffed400 	.word	0xfffed400
+  ac:	fffed800 	.word	0xfffed800

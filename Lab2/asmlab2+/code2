@@ -1,0 +1,23 @@
+.text
+.global  _start
+_start:  
+
+
+LDR R1, N
+LDR R2, M
+ADD R1, R2
+LDR R1, N
+ADDS R1, R2
+
+LDR R1, O
+LDR R2, O
+ADDS R1, R2
+
+MOVW R1, 0xFD56
+MOVT R1, 0x7E89
+STOP: B STOP
+
+N: .word 0x7E89FD56
+M: .word 0x53A47BC7
+O: .word 0x0
+.end
